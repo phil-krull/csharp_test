@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    <!-- created a reference for simplicity -->
+    List<Author> Authors = Model.AllAuthors;
+    List<Book> Books = Model.AllBooks;
+}
+
+<!-- @@model = binds the model 
+@@Model = refers to the object itself -->
+
+@model IndexView
+<form action="/AddAuthor" method="post">
+    <label asp-for="FormAuthor.Name"></label>
+    <br>
+    <input type="text" asp-for="FormAuthor.Name">
+    <br>
+    <span asp-validation-for="FormAuthor.Name"></span>
+    <br>
+    <input type="submit" value="Add Author">
+</form>
+<h1>All Authors</h1>
+<ul>
+    @foreach(Author a in Authors)
+    {
+        <li>@a.Name
+            <ul>
+            @foreach(Book b in a.Books)
+            {
+                <li>@b.Title</li>
+            }
+            </ul>
+        </li>
+    }
+</ul>
+<h1>Add Book</h1>
+<form action="/AddBook" method="post">
+    <label asp-for="FormBook.Title">Title</label>
+    <input type="text" asp-for="FormBook.Title">
+    <br>
+    <label asp-for="FormBook.AuthorId">Author</label>
+    <select asp-for="FormBook.AuthorId">
+            @foreach(Author a in Authors)
+            {
+                <option value="@a.AuthorId">@a.Name</option>
+            }
+    </select>
+    <br>
+    <input type="submit" value="Add Book">
+</form>
+<h1>All Books</h1>
+<ul>
+    @foreach(Book b in Books)
+    {
+        <li>@b.Title written by @b.Author.Name</li>
+    }
+</ul>
